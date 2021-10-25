@@ -12,11 +12,8 @@ Make sure you have installed all of the following prerequisites on your developm
 ### Cloning The GitHub Repository
 
 ```bash
-git clone https://github.com/Danielstep4/phone-book.git
-cd phone-book
-git clone https://github.com/danielstep4/phone-book-ui.git
-git clone https://github.com/danielstep4/phone-book-assignment.git
-
+git clone https://github.com/Danielstep4/phone-book-app.git
+cd phone-book-app
 
 ```
 
