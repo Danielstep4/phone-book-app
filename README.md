@@ -16,8 +16,23 @@ git clone https://github.com/Danielstep4/phone-book-app.git
 cd phone-book-app
 
 ```
+## Windows Users
+### Create .env file in server and add MONGO_URL (Port: 27017)
+```bash
+cd server
+type nul > .env
 
-## Running Your Application
+```
+### Create .env file in client and add REACT_APP_API_URL with the server port (8081)
+```bash
+cd ../client
+type nul > .env
+
+```
+
+<hr>
+
+## Running Your Application 
 start the app server:
 
 ```bash
@@ -32,4 +47,4 @@ docker-compose up --build
 ### UI Code
 [Phone book UI repository](https://github.com/danielstep4/phone-book-ui)
 ### Server Code
-[Phone book server repository](https://github.com/danielstep4/phone-book-assignment)
+[Phone book server repository](https://github.com/danielstep4/phone-book-server)
