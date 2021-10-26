@@ -2,10 +2,10 @@ import ContactModel from "../models/contact";
 import type { Contact } from "../models/contact";
 import type express from "express";
 import { verifyPhone } from "../utils/verifyPhone";
+import { Error } from "mongoose";
 
 const getAllContacts = async (_req: express.Request, res: express.Response) => {
   try {
-    // #TODO: Fix SOrt
     const contacts = await ContactModel.find({}).sort({ fullname: 1 }).exec();
     if (contacts) {
       return res.status(200).json(contacts);
@@ -39,18 +39,14 @@ const getContactByName = async (
 
 const setNewContact = async (req: express.Request, res: express.Response) => {
   const { fullname, phone, description } = req.body as Contact;
-  if (
-    !fullname.trim() ||
-    !phone.trim() ||
-    !verifyPhone(phone) ||
-    fullname.length > 32
-  )
+  // Validation
+  if (!fullname.trim() || fullname.length > 32)
     return res
       .status(400)
-      .send(
-        "Bed request! Please provide both fullname and phone number. (max: 32 characters)"
-      );
-
+      .send("Please provide a valid fullname. (max: 32 characters)");
+  if (!phone.trim() || !verifyPhone(phone))
+    return res.status(400).send("Please provide a valid phone number.");
+  // Creating new contact
   const newContact = new ContactModel({
     fullname: fullname.toLowerCase().trim(),
     phone: phone.trim(),
@@ -59,7 +55,10 @@ const setNewContact = async (req: express.Request, res: express.Response) => {
   try {
     const contact = await newContact.save();
     return res.status(201).json(contact);
-  } catch (e) {
+  } catch (e: any) {
+    if (e.name === "MongoServerError" && e.code === 11000) {
+      return res.status(400).send("Number already exists.");
+    }
     console.error(e);
     return res.status(500).send("Server error! Please try again later.");
   }
