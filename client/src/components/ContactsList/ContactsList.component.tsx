@@ -68,15 +68,22 @@ const ContactsList: React.FC<ContactsListProps> = ({ data }) => {
           </button>
         </form>
         <div className="overflow-auto max-h-96">
-          {displayData.length
-            ? displayData.map((contact) => (
-                <Contact contact={contact} key={contact._id} />
-              ))
-            : "Not Found"}
+          {!data || !data.length ? (
+            <span className="block p-1 font-bold text-lg">
+              No Contacts, please add one.
+            </span>
+          ) : displayData.length ? (
+            displayData.map((contact) => (
+              <Contact contact={contact} key={contact._id} />
+            ))
+          ) : (
+            "Not Found"
+          )}
         </div>
         <button
           className="bg-black text-white text-lg rounded p-2 text-center w-full"
           onClick={toggleAddContactModal}
+          autoFocus={!data || !data.length}
         >
           Add Contact
         </button>

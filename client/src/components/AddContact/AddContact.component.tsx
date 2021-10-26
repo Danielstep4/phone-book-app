@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { verifyPhone } from "../../utils/verifyPhone";
 
@@ -26,7 +26,7 @@ const AddContact: React.FC<AddContactProps> = ({ toggler, updateData }) => {
         clearTimeout(timeoutID);
       }
     };
-  }, [isSaved]);
+  }, [isSaved, toggler]);
   // Effect on error
   useEffect(() => {
     let timeoutID: NodeJS.Timeout;
@@ -45,9 +45,12 @@ const AddContact: React.FC<AddContactProps> = ({ toggler, updateData }) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!verifyPhone(phone))
-      setError({ isError: true, message: "Please provide a phone number." });
+      setError({
+        isError: true,
+        message: "Please provide a valid phone number.",
+      });
     else if (!fullname.trim())
-      setError({ isError: true, message: "Please provide a full name" });
+      setError({ isError: true, message: "Please provide a valid full name" });
     else {
       try {
         const response = await axios.post(
@@ -64,11 +67,23 @@ const AddContact: React.FC<AddContactProps> = ({ toggler, updateData }) => {
           setIsSaved(true);
         }
         clearInputs();
-      } catch (error) {
-        setError({
-          isError: true,
-          message: "Server error! Please try again later",
-        });
+      } catch (e: any) {
+        const error: AxiosError = e;
+        if (
+          error.response &&
+          error.response.status === 400 &&
+          typeof error.response.data === "string"
+        ) {
+          setError({
+            isError: true,
+            message: error.response.data,
+          });
+        } else {
+          setError({
+            isError: true,
+            message: "Server error! Please try again later",
+          });
+        }
       }
     }
   };
