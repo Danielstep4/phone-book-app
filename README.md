@@ -1,4 +1,4 @@
-# Phone book main repository 
+# Phone book manager main repository 
 
 ## Getting Started
 To get a local copy up and running follow these steps.
@@ -11,20 +11,20 @@ Make sure you have installed all of the following prerequisites on your developm
 
 ### Cloning The GitHub Repository
 
-```bash
+```sh
 git clone https://github.com/Danielstep4/phone-book-app.git
 cd phone-book-app
 
 ```
 ## Windows Users
 ### Create .env file in server and add MONGO_URL (Port: 27017)
-```bash
+```sh
 cd server
 type nul > .env
 
 ```
 ### Create .env file in client and add REACT_APP_API_URL with the server port (8081)
-```bash
+```sh
 cd ../client
 type nul > .env
 
@@ -44,7 +44,7 @@ docker-compose up --build
 - Server will be exposed to port 8081
   
 
-### UI Code
+### UI Code and commits
 [Phone book UI repository](https://github.com/danielstep4/phone-book-ui)
-### Server Code
+### Server Code and commits
 [Phone book server repository](https://github.com/danielstep4/phone-book-server)
